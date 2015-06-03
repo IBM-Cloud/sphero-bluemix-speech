@@ -19,7 +19,7 @@ Log in to Bluemix and create a new application, e.g. MySphero, based on the [Int
 
 In the next step you have to register your own device. Open the dashboard of the Internet of Things service and navigate to 'Add Device'. As device type choose 'Watson' and an unique device id - [screenshot](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/registerdevice1.png). As result you'll get an org id and password - [screenshot](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/registerdevice2.png).
 
-In order to import the flow open your newly [created Bluemix application](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-android/master/images/nodered1.png) and open the Node-RED editor, e.g. http://mysphero.mybluemix.net/red, and choose [import from clipboard]((https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-android/master/images/nodered4.png). You find the flow in the sub-directory 'noderedflow'. 
+In order to import the flow open your newly [created Bluemix application](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/bluemixapp.png) and open the Node-RED editor, e.g. http://mysphero.mybluemix.net/red, and choose [import from clipboard](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-android/master/images/nodered4.png). You find the flow in the sub-directory 'noderedflow'. 
 
 If you want to actually steer a Sphero ball you have to also set up the Android or iOS app. Alternatively you can modify the flow to do whatever you like to do based on the received spoken words.
 
