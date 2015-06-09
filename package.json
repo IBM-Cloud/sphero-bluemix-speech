@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/watson-developer-cloud/speech-to-text-nodejs.git"
+    "url": "https://github.com/IBM-Bluemix/sphero-bluemix-speech.git"
   },
   "author": "IBM Corp.",
   "contributors": [
@@ -30,6 +30,7 @@
     "url": "https://github.com/watson-developer-cloud/speech-to-text-nodejs/issues"
   },
   "scripts": {
+    "install": "node admin.js track",
     "start": "node app.js"
   }
 }
