@@ -65,8 +65,14 @@ $(document).ready(function() {
   };
 
   speech.onresult = function(data) {
-    //console.log('demo.onresult()');
-    showResult(data);
+    console.log('demo.onresult()');
+    if (data) {
+      //console.log(data);
+      showResult(data);
+    }
+    else {
+      //console.log('no data');
+    }
   };
 
   micButton.click(function() {
@@ -86,14 +92,17 @@ $(document).ready(function() {
       //if is a partial transcripts
       if (data.results.length === 1 ) {
         var paragraph = transcript.children().last(),
-          text = data.results[0].alternatives[0].transcript || '';
-        publish("iot-2/evt/partial/fmt/json", JSON.stringify({ value: data.results[0].alternatives[0].transcript }));
+        text = data.results[0].alternatives[0].transcript || '';
+        //publish("iot-2/evt/partial/fmt/json", JSON.stringify({ value: data.results[0].alternatives[0].transcript }));
 
         //Capitalize first word
-        text = text.charAt(0).toUpperCase() + text.substring(1);
+        //text = text.charAt(0).toUpperCase() + text.substring(1);
         // if final results, append a new paragraph
         if (data.results[0].final){
-          publish("iot-2/evt/partial/fmt/json", JSON.stringify({ value: data.results[0].alternatives[0].transcript }));
+          text = data.results[0].alternatives[0].transcript;
+          text = text.trim();
+          text = JSON.stringify({ value: text});
+          publish("iot-2/evt/partial/fmt/json", text );
           text = text.trim() + '.';
           $('<p></p>').appendTo(transcript);
         } else {
@@ -107,22 +116,24 @@ $(document).ready(function() {
   var client = null;
 
   function connect() {
-    var server = "irnwk2.messaging.internetofthings.ibmcloud.com";
-    var port = 1883;
+    var server = "ovij8z.messaging.internetofthings.ibmcloud.com";
+    var port = 8883;
     var username = "use-token-auth"; 
     var password = ""; 
 
-    var clientId = "d:irnwk2:watson:niklasspeech";
+    var clientId = "d:ovij8z:watson:speech";
     client = new Messaging.Client(server, port, clientId)
+
     client.onConnectionLost = function() { 
       isConnected = false;
       console.log("disconnected!");
     }
     client.connect({
-		userName: username,
-		password: password,
-		onSuccess: function() { console.log("connected!"); }
-	});
+    userName: username,
+    password: password,
+    useSSL: true,
+    onSuccess: function() { console.log("connected!"); }
+  });
   }
 
   var lastMsg = "";
@@ -130,9 +141,9 @@ $(document).ready(function() {
   function publish(topic, payload) {
     try {
     var now = (new Date()).getTime();
-	if (lastMsg == payload && now - lastTime < 2000) { return; }
-	lastTime = now;
-	lastMsg = payload;
+  if (lastMsg == payload && now - lastTime < 2000) { return; }
+  lastTime = now;
+  lastMsg = payload;
     var msgObj = new Messaging.Message(payload);
     msgObj.destinationName = topic;
     client.send(msgObj);

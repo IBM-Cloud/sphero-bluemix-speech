@@ -130,7 +130,7 @@ Microphone.prototype.stop = function() {
   if (!this.recording)
     return;
   this.recording = false;
-  this.stream.stop();
+  //this.stream.stop();
   this.requestedAccess = false;
   this.mic.disconnect(0);
   this.mic = null;
