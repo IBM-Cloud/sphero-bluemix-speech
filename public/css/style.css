@@ -1,215 +1,175 @@
-.bold {
-  font-weight: bold;
+.col-lg-12 {
+  padding: 0px!important;
 }
-.img-container img {
-    width: 100%;
-    height: auto;
+.col-md-12 {
+  padding: 0px!important;
 }
-.top-nav {
-    background-color: #404041;
-    padding-top: 15px;
-    padding-bottom: 15px;
-}
-.top-nav a {
-    font-size: 14px;
-    font-weight: 300;
-    text-decoration: underline;
-    color: white;
-}
-.top-nav a:hover {
-    color: #E0E0E0;
-}
-.top-nav .right {
-    float: right;
-    margin-right: 20px;
-}
-.top-nav .left {
-    float: left;
-}
-.top-nav .fork:before {
-    content: ' ';
-    background: url('../images/fork-icon.svg') no-repeat;
-    height: 16px;
-    width: 16px;
-    vertical-align: text-bottom;
-    display: inline-block;
-    margin-right: 3px;
-}
-.header {
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-}
-.header h2 {
-    font-weight: 400;
-}
-.header h3 {
-    color: #00b2ef;
-    font-weight: 400;
-}
-.avatar {
-    padding-right: 0px;
-}
-.avatar img {
-    margin-top: 9px;
-}
-.header a {
-    font-size: 14px;
-    font-weight: 300;
-    text-decoration: underline;
-    color: #404041;
-    display: block;
-    margin-left: 20px;
-    margin-bottom: 3px;
-}
-.header a:hover {
-    color: #777677;
-}
-input[type="file"] {
-    height: 0px;
-    width: 0px;
-    overflow: hidden;
-}
-input[type="file"]:focus + .browse {
-    outline: 5px auto -webkit-focus-ring-color;
-}
-.mic-container {
-  margin-bottom: 40px;
-}
-.micText {
-    font-size: 14px;
-    margin-top: 10px;
-    color: #999999;
-    text-align: center;
-}
-.instructions {
-    margin-bottom: 10px;
-}
-.microphone {
-    width: 100%;
-}
-.micButton {
-    background: url('../images/microphone.svg') no-repeat;
-    width: 120px;
-    height: 120px;
-    margin: 0px auto;
-    cursor: pointer;
-}
-.micButton.recording {
-    background: url('../images/microphone_running.svg') no-repeat;
-}
-.micButton.recording:hover {
-    background: url('../images/microphone_running.svg') no-repeat;
-}
-.micButton-preload {
-    display: none;
-}
-.micButton-preload, .micButton:hover {
-    background: url('../images/microphone_hover.svg') no-repeat;
-}
-.micButton:hover .micText {
-    text-decoration: underline;
-}
-.errorMsg {
-    font-weight: bold;
-    color: red;
-}
-.start-over {
-    position: absolute;
-    top: 35px;
-    right: 15px;
+.col-sm-12 {
+  padding: 0px!important;
 }
 
-.overlay-container {
-  position: relative;
+.row {
+  margin-left: 0px!important;
+  margin-right: 0px!important;
 }
 
-.unsupported-overlay {
-  display: none;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(250, 250, 250, 0.96);
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 2;
+.navbar {
+  cursor: pointer;
 }
-.unsupported-overlay h4 {
-  color: #222;
-  margin: auto;
-  width: 400px;
-  height: 36px;
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+
+.navbar-text {
+  overflow: hidden;
+  white-space: nowrap;
+  margin:0;
+  padding: 0;
+}
+
+.nav-inverse-color {
+  padding: 5px 0;
   text-align: center;
-  font-size: 18px;
-  font-weight: 400;
-}
-
-
-.instructions{
-    margin-bottom: 10px;
-}
-
-.sample-audio {
-  text-align: left;
-}
-
-.sample-title {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
-.sample-btn {
-    display: inline-block;
-    margin-bottom: 10px;
-}
-
-.sample-btn p{
-    display: inline-block;
-    margin-top: 6px;
-    color: #404041;
-}
-
-.sample-btn p:hover{
-    color: #00B2EF;
-    text-decoration: underline;
-}
-
-.sample-icon {
-    float: left;
-    width: 24px;
-    margin-right: 10px;
-}
-
-.sample-title {
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
-.sample-btn {
   display: inline-block;
-  margin-bottom: 10px;
-}
-
-.sample-icon {
+  width: 100%;
   float: left;
-  width: 32px;
-  height: 32px;
-  margin-right: 10px;
 }
 
-.start-over {
-  position: absolute;
-  top: 35px;
-  right: 15px;
+@media (min-width: 500px) {
+  .nav-inverse-color {
+    width: 50%;
+  }
 }
-.audio-staged {
+
+@media (min-width: 730px) {
+  .nav-inverse-color {
+    width: 25%;
+  }
+}
+
+@media screen and (max-width : 500px) {
+  .service-icon {
+    display: none;
+  }
+}
+
+input[type="radio"], input[type="checkbox"] {
+  margin: 1em 1em 1em 0;
+  margin-top: 1px \9;
+  line-height: normal;
+}
+
+.alt-hypothesis {
+  margin-top: 2em;
+}
+.alt-hypothesis > p {
+  margin-bottom: 0;
+}
+.hypothesis {
+  color: #5a5a5a; /*gray 60*/
+  clear: both;
+  float: left;
+}
+
+.dropdown {
+  width: 135% !important;
+}
+
+#dropdownMenu1 {
+  margin-bottom: 2em;
+}
+
+.error-row {
+  padding-left: 1em;
+  padding-right: 1em;
   display: none;
-  max-width: 100%;
+  background-color: #d74108;
+  color: white;
 }
-.upload-label {
-  /*height: 38px;*/
+
+.error-row a {
+  color: white;
+  margin-bottom: 0.2em;
+}
+
+.notification-row {
+  padding-left: 1em;
+  padding-right: 1em;
+  display: none;
+  border-bottom: 2px solid #ececec;
+  background-color: #d74108;
+  color: black;
+}
+.notification-row a {
+  color: black;
+  margin-bottom: 0.2em;
+}
+
+#progressIndicator {
+  visibility: hidden;
+}
+
+progress::-moz-progress-bar { background: #5596E6; }
+progress::-webkit-progress-bar { background: #5596E6; }
+
+
+#metadataTable th {
+  padding: 0.5em !important;
+}
+
+#metadataTableBody td {
+  padding: 0 !important;
+}
+
+.alt-hypothesis hr {
+  margin-bottom: 0 !important;
+}
+
+progress {
+  display: none
+}
+
+.nav-label {
+  color: white;
+}
+
+/* numbered bullets solution from: */
+/* http://www.456bereastreet.com/archive/201105/styling_ordered_list_numbers/ */
+ol {
+    counter-reset:li;
+    margin-left:0;
+    padding-left:0;
+    margin-top: 1em;
+}
+ol > li {
+    position:relative;
+    margin: 0 0 6px 2em; /* Make room for numbers */
+    padding: 4px 8px 4px 12px; /* Add some spacing around the content */
+    list-style:none;
+    vertical-align: middle;
+}
+
+ol > li:before {
+    content:counter(li); /* Use the counter as content */
+    counter-increment:li; /* Increment the counter by 1 */
+    /* Position and style the number */
+    position:absolute;
+    left: -2em;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    width: 2em;
+    margin-right: 8px;
+    padding: 4px;
+    color: #fff;
+    background: #325c80;
+    border-radius: 50%;
+    /* top: 1em; */
+    /* font-weight:bold; */
+    text-align:center;
+}
+
+li ol,
+li ul {margin-top:6px;}
+ol ol li:last-child {margin-bottom:0;}
+
+.service-icon {
+  width: 100%;
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2014 IBM Corp. All Rights Reserved.
+ * Copyright 2015 IBM Corp. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,32 +16,72 @@
 
 'use strict';
 
-var app = require('express')(),
-  server = require('http').Server(app),
-  io = require('socket.io')(server),
-  bluemix = require('./config/bluemix'),
-  SpeechToText = require('./speech-to-text'),
-  extend = require('util')._extend;
+var express      = require('express'),
+    app          = express(),
+    vcapServices = require('vcap_services'),
+    extend       = require('util')._extend,
+    watson       = require('watson-developer-cloud');
 
-// if bluemix credentials exists, then override local
-var credentials = extend({
-  version:'v1',
-	username: '<username>',
-	password: '<password>'
-}, bluemix.getServiceCreds('speech_to_text')); // VCAP_SERVICES
+// Bootstrap application settings
+require('./config/express')(app);
 
-// Save bluemix credentials
-app.set('service',credentials);
+var mqtt = require('mqtt');
 
-// Create the service wrapper
-var speechToText = new SpeechToText(credentials);
+// For local development, replace username and password
+var config = extend({
+  version: 'v1',
+  url: 'https://stream.watsonplatform.net/speech-to-text/api',
+  username: '',
+  password: ''
+}, vcapServices.getCredentials('speech_to_text'));
 
-// Configure express
-require('./config/express')(app,speechToText);
+var authService = watson.authorization(config);
 
-// Configure sockets
-require('./config/socket')(io, speechToText);
+var mqttClient;
+var mqttConfig = {
+  deviceId : "speech",
+  deviceType : "watson",
+  apiToken : "",
+  orgId : "",
+  port : "1883"
+};
+
+app.get('/', function(req, res) {
+  var clientId = ['d', mqttConfig.orgId, mqttConfig.deviceType, mqttConfig.deviceId].join(':');
+  mqttClient = mqtt.connect("mqtt://" + mqttConfig.orgId + ".messaging.internetofthings.ibmcloud.com" + ":" + mqttConfig.port, {
+    "clientId" : clientId,
+    "keepalive" : 30,
+    "username" : "use-token-auth",
+    "password" : mqttConfig.apiToken
+  });
+
+  res.render('index', { ct: req._csrfToken });
+});
+
+// Get token using your credentials
+app.post('/api/token', function(req, res, next) {
+  authService.getToken({url: config.url}, function(err, token) {
+    if (err)
+      next(err);
+    else
+      res.send(token);
+  });
+});
+
+app.post('/mqtt', function(req, res, next) {
+  //console.log(req.body.text)
+  if (mqttClient) {
+    mqttClient.publish('iot-2/evt/partial/fmt/json', JSON.stringify({
+      "value" : req.body.text
+    }), function () {
+    }); 
+  }
+  res.send("ok");
+});
+
+// error-handler settings
+require('./config/error-handler')(app);
 
 var port = process.env.VCAP_APP_PORT || 3000;
-server.listen(port);
+app.listen(port);
 console.log('listening at:', port);

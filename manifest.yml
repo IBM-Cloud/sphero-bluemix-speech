@@ -1,15 +1,15 @@
 ---
 declared-services:
   speech-to-text-service-standard:
-    label: anki-speech
+    label: speech_to_text
     plan: standard
 applications:
-- name: anki-speech
+- name: speech-to-text-demo
   path: .
   command: npm start
   memory: 512M
   services:
-  - anki-speech
+  - speech-to-text-service-standard
   env:
     NODE_ENV: production
     SECURE_EXPRESS: 1

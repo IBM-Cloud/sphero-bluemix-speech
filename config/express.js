@@ -18,42 +18,18 @@
 
 // Module dependencies
 var express    = require('express'),
-  errorhandler = require('errorhandler'),
-  bodyParser   = require('body-parser'),
-  fs           = require('fs');
-module.exports = function (app, speechToText) {
+  bodyParser   = require('body-parser');
+
+module.exports = function (app) {
+  app.set('view engine', 'ejs');
+  app.enable('trust proxy');
+
+  // Only loaded when SECURE_EXPRESS is `true`
+  if (process.env.SECURE_EXPRESS)
+    require('./security')(app);
 
   // Configure Express
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
-
-  // Setup static public directory
+  app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
+  app.use(bodyParser.json({ limit: '1mb' }));
   app.use(express.static(__dirname + '/../public'));
-  app.set('view engine', 'jade');
-  app.set('views', __dirname + '/../views');
-
-  // Add error handling in dev
-  if (!process.env.VCAP_SERVICES) {
-    app.use(errorhandler());
-  }
-
-// render index page
-app.get('/', function(req, res) {
-  res.render('index');
-});
-
-app.post('/', function(req, res) {
-  if (!req.body.url || req.body.url.indexOf('audio/') !==0)
-    return res.status(500).json({ error: 'Malformed URL' });
-
-  var audio = fs.createReadStream(__dirname + '/../public/' + req.body.url);
-
-  speechToText.recognize({audio: audio}, function(err, transcript){
-    if (err)
-      return res.status(500).json({ error: err });
-    else
-      return res.json(transcript);
-  });
-});
-
 };

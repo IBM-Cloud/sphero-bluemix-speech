@@ -1,56 +1,161 @@
-sphero-bluemix-speech
-================================================================================
+# Speech to Text plus MQTT for IoT Demos
 
-This [project](https://github.com/IBM-Bluemix/sphero-bluemix-speech) is a simple sample that shows how to use the Watson [Speech to Text](http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/speech-to-text.html) service in [IBM Bluemix](https://bluemix.net) to steer a [Sphero](http://www.gosphero.com/sphero/) ball. The [web application](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/app.png) in this project is an extension to the projects [sphero-bluemix-android](https://github.com/IBM-Bluemix/sphero-bluemix-android) and [sphero-bluemix-ios](https://github.com/IBM-Bluemix/sphero-bluemix-ios) which contain the mobile apps that communicate with the ball.
+This project is an extension of the [Watson Speech to Text Browser Application](https://github.com/watson-developer-cloud/speech-to-text-nodejs) to send received text via MQTT so that this data can be used in Node-RED flows.
 
-The [Watson Speech to Text](https://github.com/watson-developer-cloud/speech-to-text-nodejs) Node.js sample has been extended to send the spoken words as text via the [MQTT](http://mqtt.org) protocol to the [IBM Internet of Things](https://console.ng.bluemix.net/?ace_base=true#/store/serviceOfferingGuid=8e3a9040-7ce8-4022-a36b-47f836d2b83e&fromCatalog=true) service. A Node-RED flow is used to receive the spoken words and to trigger the specific flows.
+In order to set up the application follow the original readme below. The only extra step is to set up MQTT.
 
-![alt text](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/flow.png "Flow")
+Log in to Bluemix and create a new application based on the [Internet of Things Foundation Starter](https://console.ng.bluemix.net/catalog/starters/internet-of-things-foundation-starter/). Additionally add the [Internet of Things](https://console.ng.bluemix.net/catalog/services/internet-of-things-foundation/) service to it.
 
-Authors: Mark VanderWiele, Bryan Boyd
+In the next step you have to register your own device. Open the dashboard of the Internet of Things service and navigate to 'Add Device'. As device type choose 'watson' and an unique device id, for example 'speech'. As result you'll get an org id and password.
 
+Paste this information in app.js:
+- deviceId
+- deviceType
+- apiToken
+- orgId
 
-Setup of the Node-RED Flow
-================================================================================
+Only the files app.js, src/views/displaymetadata.js, package.json, views/index.ejs and README.md have been modified from the orginial project. 
 
-In order to send commands to the mobile app a Node-RED flow in IBM Bluemix is used in combination with the IBM Internet of Things Foundation. 
-
-Log in to Bluemix and create a new application, e.g. MySphero, based on the [Internet of Things Foundation Starter](https://console.ng.bluemix.net/?ace_base=true#/store/appType=web&cloudOEPaneId=store&appTemplateGuid=iot-template&fromCatalog=true). Additionally add the [Internet of Things](https://console.ng.bluemix.net/?ace_base=true#/store/serviceOfferingGuid=8e3a9040-7ce8-4022-a36b-47f836d2b83e&fromCatalog=true) service to it.
-
-In the next step you have to register your own device. Open the dashboard of the Internet of Things service and navigate to 'Add Device'. As device type choose 'Watson' and an unique device id - [screenshot](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/registerdevice1.png). As result you'll get an org id and password - [screenshot](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/registerdevice2.png).
-
-In order to import the flow open your newly [created Bluemix application](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/bluemixapp.png) and open the Node-RED editor, e.g. http://mysphero.mybluemix.net/red, and choose [import from clipboard](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-android/master/images/nodered4.png). You find the flow in the sub-directory 'noderedflow'. 
-
-If you want to actually steer a Sphero ball you have to also set up the Android or iOS app. Alternatively you can modify the flow to do whatever you like to do based on the received spoken words.
+The following text is the description from the original project.
 
 
+# Speech to Text Browser Application
 
-Setup of the Node.js Application
-================================================================================
+  The [Speech to Text][service_url] service uses IBM's speech recognition capabilities to convert speech in multiple languages into text. The transcription of incoming audio is continuously sent back to the client with minimal delay, and it is corrected as more speech is heard. The service is accessed via a WebSocket interface; a REST HTTP interface is also available;
 
-1. Create a Bluemix Account. [Sign up](https://apps.admin.ibmcloud.com/manage/trial/bluemix.html) in Bluemix, or use an existing account. 
+Node.js is also used to provide the browser client's authentication token.
 
-2. Download and install the [Cloud-foundry CLI](https://github.com/cloudfoundry/cli) tool
+Give it a try! Click the button below to fork into IBM DevOps Services and deploy your own copy of this application on Bluemix.
 
-3. Download the application and change to that directory. Run "npm install".
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/watson-developer-cloud/speech-to-text-nodejs)
 
-4. Modify the file [demo.js](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/demojs.png). Replace the text in the screenshot with your org id, device id and auth-token that you received when you registered the device. Note that in a real production application you should not put the password in the JavaScript file.
+## Getting Started
 
-5. Edit the [manifest.yml](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/manifest.png) file and change the application name and service name to something unique. The name you use will determinate your application url initially, e.g. sphero-watson-nik.mybluemix.net.
+1. Create a Bluemix Account
+
+    [Sign up][sign_up] in Bluemix, or use an existing account. Watson Services in Beta are free to use.
+
+2. Download and install the [Cloud-foundry CLI][cloud_foundry] tool
+
+3. Edit the `manifest.yml` file and change the `<application-name>` to something unique.
+  ```none
+  applications:
+  - services:
+    - speech-to-text-service-standard
+    name: <application-name>
+    command: node app.js
+    path: .
+    memory: 512M
+  ```
+  The name you use will determinate your application url initially, e.g. `<application-name>.mybluemix.net`.
+
+4. Install [Node.js](http://nodejs.org/)
+
+5. Install project dependencies and build browser application:
+  ```sh
+  $ npm install && npm run build
+  ```
 
 6. Connect to Bluemix in the command line tool.
-```
-$ cf api https://api.ng.bluemix.net
-$ cf login -u <your user ID>
-```
+  ```sh
+  $ cf api https://api.ng.bluemix.net
+  $ cf login -u <your user ID>
+  ```
 
 7. Create the Speech to Text service in Bluemix.
-```
-$ cf create-service speech_to_text free speech-to-text-service-nik
-```
+  ```sh
+  $ cf create-service speech_to_text standard speech-to-text-service-standard
+  ```
 
 8. Push it live!
-```
-$ cf push
-```
-These steps created the [application](https://raw.githubusercontent.com/IBM-Bluemix/sphero-bluemix-speech/master/images/bluemixapp.png) in Bluemix including the service.
+  ```sh
+  $ cf push
+  ```
+
+See the full [Getting Started][getting_started] documentation for more details, including code snippets and references.
+
+## Running locally
+
+  The application uses [Node.js](http://nodejs.org/) and [npm](https://www.npmjs.com/) so you will have to download and install them as part of the steps below.
+
+1. Copy the credentials from your `speech-to-text-service-standard` service in Bluemix to `app.js`, you can see the credentials using:
+
+    ```sh
+    $ cf env <application-name>
+    ```
+    Example output:
+    ```sh
+    System-Provided:
+    {
+    "VCAP_SERVICES": {
+      "speech_to_text": [{
+          "credentials": {
+            "url": "<url>",
+            "password": "<password>",
+            "username": "<username>"
+          },
+        "label": "speech-to-text",
+        "name": "speech-to-text-service-standard",
+        "plan": "standard"
+     }]
+    }
+    }
+    ```
+
+    You need to copy `username`, `password` and `url`. Then you need to pass those values in app.js
+
+    ```
+    var config = {
+      version: 'v1',
+      url: 'https://stream.watsonplatform.net/speech-to-text/api',
+      username: '<username>',
+      password: '<password>'  
+    };
+    ```
+
+2. Install [Node.js](http://nodejs.org/)
+
+3. To install project dependencies, go to the project folder in a terminal and run:
+    ```sh
+    $ npm install
+    ```
+
+4. Then, build the browser application using [Browserify][browserify]:
+    ```sh
+    $ npm run build
+    ```
+
+5. Start the application:
+    ```sh
+    $ node app.js
+    ```
+
+6. Go to: [http://localhost:3000](http://localhost:3000)
+
+## Troubleshooting
+
+To troubleshoot your Bluemix app the main useful source of information are the logs, to see them, run:
+
+  ```sh
+  $ cf logs <application-name> --recent
+  ```
+
+For problems with recording audio, you can play back the audio you just recorded for debugging purposes.
+To do that, add '?debug=true' (without the quotations) in the URL.
+
+## License
+
+  This sample code is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
+
+## Contributing
+
+  See [CONTRIBUTING](CONTRIBUTING.md).
+
+## Open Source @ IBM
+  Find more open source projects on the [IBM Github Page](http://ibm.github.io/)
+
+[service_url]: http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/speech-to-text.html
+[cloud_foundry]: https://github.com/cloudfoundry/cli
+[getting_started]: http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/getting_started/
+[sign_up]: https://console.ng.bluemix.net/registration/
+[browserify]: http://browserify.org/

@@ -1,30 +1,53 @@
 {
-  "name": "SpeechToTextNodejsStarterApp",
-  "version": "0.1.3",
-  "description": "A sample nodejs app for Bluemix that use the speech-to-text service",
+  "name": "SpeechToTextBrowserStarterApp",
+  "version": "1.0.1",
+  "description": "A sample browser app for Bluemix that use the speech-to-text service, fetching a token via Node.js",
   "dependencies": {
-    "body-parser": "~1.10.0",
-    "cookie": "~0.1.2",
-    "errorhandler": "~1.2.2",
-    "express": "~4.10.6",
-    "jade": "~1.8.2",
-    "request": "~2.51.0",
-    "socket.io": "~1.3.2",
-    "commander": "^2.6.0",
-    "http-post": "^0.1.1"
-  },
-  "engines": {
-    "node": ">=0.10"
+    "body-parser": "~1.14.1",
+    "cookie-parser": "^1.4.1",
+    "csurf": "^1.8.3",
+    "ejs": "^2.3.4",
+    "express": "~4.13.3",
+    "express-rate-limit": "^2.0.2",
+    "express-secure-only": "^0.2.1",
+    "helmet": "^1.0.1",
+    "vcap_services": "^0.1.7",
+    "watson-developer-cloud": "^1.1.2",
+    "mqtt": "1.5.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/IBM-Bluemix/sphero-bluemix-speech.git"
+    "url": "https://github.com/watson-developer-cloud/speech-to-text-nodejs.git"
   },
   "author": "IBM Corp.",
+  "browserify-shim": {
+    "jquery": "global:jQuery"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
   "contributors": [
     {
       "name": "German Attanasio Ruiz",
       "email": "germanatt@us.ibm.com"
+    },
+    {
+      "name": "Daniel Bolano",
+      "email": "dbolano@us.ibm.com"
+    },
+    {
+      "name": "Britany L. Ponvelle",
+      "email": "blponvelle@us.ibm.com"
+    },
+    {
+      "name": "Eric S. Bullington",
+      "email": "esbullin@us.ibm.com"
+    },
+    {
+      "name": "Niklas Heidloff",
+      "email": "niklas_heidloff@de.ibm.com"
     }
   ],
   "license": "Apache-2.0",
@@ -32,7 +55,14 @@
     "url": "https://github.com/watson-developer-cloud/speech-to-text-nodejs/issues"
   },
   "scripts": {
-    "install": "node admin.js track",
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "browserify src/index.js | uglifyjs -nc > public/js/index.js",
+    "watch": "watchify -v -d -o public/js/index.js src/index.js"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "browserify-shim": "^3.8.12",
+    "watchify": "^3.6.1",
+    "uglifyjs": "^2.4.10"
   }
 }
